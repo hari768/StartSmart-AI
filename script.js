@@ -121,7 +121,7 @@ Return ONLY a valid JSON object. No markdown, no backticks, no explanation befor
         "X-Title": "StartSmart AI"
       },
       body: JSON.stringify({
-        model: "openrouter/auto",
+        model: "mistralai/mistral-small-3.2-24b-instruct:free",
         messages: [{ role: "user", content: prompt }]
       })
     });
