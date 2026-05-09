@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,7 +15,6 @@
   <div class="bg-grid"></div>
   <div class="bg-glow"></div>
 
-  <!-- NAV -->
   <nav class="navbar">
     <div class="nav-logo">Start<span>Smart</span> AI</div>
     <div class="nav-right">
@@ -31,16 +31,10 @@
     </div>
   </nav>
 
-  <!-- HERO -->
   <section class="hero">
     <div class="hero-tag">AI-Powered · Real-Time · Free</div>
-    <h1 class="hero-title">
-      Validate Your<br>
-      <span class="gradient-text">Startup Idea</span><br>
-      In Seconds
-    </h1>
+    <h1 class="hero-title">Validate Your<br><span class="gradient-text">Startup Idea</span><br>In Seconds</h1>
     <p class="hero-sub">Get a full business analysis — SWOT, revenue model, competitor insights, investor score and more. Instantly.</p>
-
     <div class="input-card">
       <label class="input-label">Your Startup Idea</label>
       <textarea id="ideaInput" placeholder="e.g. An AI-powered platform that helps farmers detect crop diseases using smartphone photos..."></textarea>
@@ -52,7 +46,6 @@
     </div>
   </section>
 
-  <!-- HISTORY -->
   <section id="historySection" class="history-section hidden">
     <div class="history-header">
       <div class="section-heading">Your Past Analyses</div>
@@ -61,18 +54,32 @@
     <div id="historyList" class="history-list"></div>
   </section>
 
-  <!-- RESULTS -->
   <section id="resultsSection" class="results-section hidden">
+
     <div class="score-banner">
       <div class="score-left">
         <div class="score-label">Investor Readiness Score</div>
         <div class="score-value" id="scoreValue">—</div>
       </div>
       <div class="score-bar-wrap">
-        <div class="score-bar-track">
-          <div class="score-bar-fill" id="scoreBarFill"></div>
-        </div>
+        <div class="score-bar-track"><div class="score-bar-fill" id="scoreBarFill"></div></div>
         <div class="score-verdict" id="scoreVerdict"></div>
+      </div>
+    </div>
+
+    <!-- CHARTS ROW -->
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-title">📈 Market Growth Potential</div>
+        <canvas id="marketChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">💰 3-Year Revenue Projection</div>
+        <canvas id="revenueChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">🎯 SWOT Score Radar</div>
+        <canvas id="swotChart"></canvas>
       </div>
     </div>
 
@@ -131,9 +138,9 @@
       <button class="re-btn" onclick="resetForm()">← Analyze Another Idea</button>
       <button class="re-btn pdf-btn" onclick="downloadPDF()">⬇ Download PDF Report</button>
     </div>
+
   </section>
 
-  <!-- LOADING -->
   <div id="loadingOverlay" class="loading-overlay hidden">
     <div class="loader-box">
       <div class="loader-ring"></div>
@@ -143,9 +150,8 @@
 
   <div id="errorBox" class="error-box hidden"></div>
 
-  <footer class="footer">Built for FlowZint AI Hackathon 2026 · Powered by OpenRouter AI</footer>
+  <footer class="footer">Built for FlowZint AI Hackathon 2026 · Powered by AI</footer>
 
-  <!-- Firebase -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, signOut as fbSignOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -165,20 +171,13 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
-
     let currentUser = null;
 
     window.signInWithGoogle = async () => {
-      try {
-        await signInWithPopup(auth, provider);
-      } catch (e) {
-        console.error(e);
-      }
+      try { await signInWithPopup(auth, provider); } catch(e) { console.error(e); }
     };
 
-    window.signOut = async () => {
-      await fbSignOut(auth);
-    };
+    window.signOut = async () => { await fbSignOut(auth); };
 
     window.saveToHistory = async (idea, score) => {
       if (!currentUser) return;
@@ -187,7 +186,7 @@
           idea, score, timestamp: new Date()
         });
         loadHistory();
-      } catch (e) { console.error(e); }
+      } catch(e) { console.error(e); }
     };
 
     window.loadHistory = async () => {
@@ -204,11 +203,7 @@
           const data = d.data();
           const item = document.createElement("div");
           item.className = "history-item";
-          item.innerHTML = `
-            <div class="history-idea">${data.idea}</div>
-            <div class="history-score">Score: ${data.score}/10</div>
-            <div class="history-date">${data.timestamp?.toDate?.()?.toLocaleDateString() || ''}</div>
-          `;
+          item.innerHTML = `<div class="history-idea">${data.idea}</div><div class="history-score">Score: ${data.score}/10</div><div class="history-date">${data.timestamp?.toDate?.()?.toLocaleDateString() || ''}</div>`;
           historyList.appendChild(item);
         });
       } catch(e) { console.error(e); }
