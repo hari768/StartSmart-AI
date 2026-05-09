@@ -262,28 +262,7 @@
     }
     .stat-card .label { font-size: 0.85rem; color: rgba(255,255,255,0.5); }
 
-    .testimonials { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-    .tcard {
-      background: var(--light-card); border-radius: 20px; padding: 28px;
-      border: 1px solid rgba(0,0,0,0.07);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .tcard:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.1); }
-    .tcard-quote {
-      font-size: 1rem; color: var(--text-dark); line-height: 1.65;
-      margin-bottom: 20px; font-style: italic;
-    }
-    .tcard-quote::before { content: '"'; color: var(--accent2); font-size: 1.6rem; font-style: normal; line-height: 0; vertical-align: -8px; margin-right: 4px; }
-    .tcard-author { display: flex; align-items: center; gap: 12px; }
-    .tcard-avatar {
-      width: 40px; height: 40px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 0.9rem; color: var(--dark);
-      flex-shrink: 0;
-    }
-    .tcard-name { font-weight: 600; font-size: 0.9rem; color: var(--text-dark); }
-    .tcard-role { font-size: 0.78rem; color: var(--text-muted); }
+
 
     /* ── FAQ ── */
     #faq {
@@ -472,60 +451,27 @@
   </div>
 </section>
 
-<!-- STATS + TESTIMONIALS -->
+<!-- STATS -->
 <section id="stats">
-  <div class="section-label">Impact</div>
-  <div class="section-title">Built for Students, <span>Loved by Founders</span></div>
+  <div class="section-label">What You Get</div>
+  <div class="section-title">Built for Students, <span>Designed for Impact</span></div>
 
   <div class="stats-grid reveal">
     <div class="stat-card">
-      <div class="big">500+</div>
-      <div class="label">Ideas Analyzed</div>
+      <div class="big">9</div>
+      <div class="label">Analysis Dimensions</div>
     </div>
     <div class="stat-card">
-      <div class="big">9</div>
-      <div class="label">Analysis Sections</div>
+      <div class="big">&lt;3s</div>
+      <div class="label">Analysis Time</div>
     </div>
     <div class="stat-card">
       <div class="big">₹0</div>
       <div class="label">Cost to Use</div>
     </div>
     <div class="stat-card">
-      <div class="big">3s</div>
-      <div class="label">Avg. Analysis Time</div>
-    </div>
-  </div>
-
-  <div class="testimonials reveal">
-    <div class="tcard">
-      <p class="tcard-quote">I used StartSmart AI to validate my food-tech idea before my MBA presentation. The SWOT and investor score gave me real confidence.</p>
-      <div class="tcard-author">
-        <div class="tcard-avatar">RK</div>
-        <div>
-          <div class="tcard-name">Rahul K.</div>
-          <div class="tcard-role">MBA Student, Hyderabad</div>
-        </div>
-      </div>
-    </div>
-    <div class="tcard">
-      <p class="tcard-quote">The charts and market data made my hackathon submission look incredibly professional. Judges were impressed with the depth.</p>
-      <div class="tcard-author">
-        <div class="tcard-avatar">PS</div>
-        <div>
-          <div class="tcard-name">Priya S.</div>
-          <div class="tcard-role">B.Tech Final Year, Bangalore</div>
-        </div>
-      </div>
-    </div>
-    <div class="tcard">
-      <p class="tcard-quote">Finally a tool that understands the Indian startup ecosystem. The competitor analysis for my agri-tech idea was spot on.</p>
-      <div class="tcard-author">
-        <div class="tcard-avatar">AV</div>
-        <div>
-          <div class="tcard-name">Arjun V.</div>
-          <div class="tcard-role">Entrepreneur, Pune</div>
-        </div>
-      </div>
+      <div class="big">10</div>
+      <div class="label">Investor Score / 10</div>
     </div>
   </div>
 </section>
