@@ -132,6 +132,8 @@ async function analyzeIdea() {
   hideLoading();
   populateResults(result);
 
+  renderCharts(idea, result.score);
+
   // Save to history if logged in
   if (window.saveToHistory) {
     try {
@@ -207,4 +209,120 @@ function downloadPDF() {
   printWindow.document.write(html);
   printWindow.document.close();
   setTimeout(() => { printWindow.print(); }, 500);
+}
+
+// ===== CHARTS =====
+let marketChartInstance = null;
+let revenueChartInstance = null;
+let swotChartInstance = null;
+
+const MARKET_DATA = {
+  food:     { labels: ["2022","2023","2024","2025","2026","2027"], data: [120000, 155000, 190000, 240000, 300000, 380000], unit: "₹ Cr" },
+  health:   { labels: ["2022","2023","2024","2025","2026","2027"], data: [180000, 220000, 280000, 350000, 430000, 540000], unit: "₹ Cr" },
+  education:{ labels: ["2022","2023","2024","2025","2026","2027"], data: [80000,  110000, 145000, 190000, 245000, 310000], unit: "₹ Cr" },
+  farm:     { labels: ["2022","2023","2024","2025","2026","2027"], data: [50000,  70000,  95000,  130000, 175000, 230000], unit: "₹ Cr" },
+  finance:  { labels: ["2022","2023","2024","2025","2026","2027"], data: [200000, 260000, 340000, 440000, 570000, 730000], unit: "₹ Cr" },
+  default:  { labels: ["2022","2023","2024","2025","2026","2027"], data: [50000,  70000,  95000,  125000, 165000, 210000], unit: "₹ Cr" }
+};
+
+const REVENUE_DATA = {
+  food:     [8, 35, 120],
+  health:   [12, 55, 180],
+  education:[10, 40, 140],
+  farm:     [6,  28, 95],
+  finance:  [15, 65, 220],
+  default:  [8,  32, 110]
+};
+
+function getCategory(idea) {
+  const l = idea.toLowerCase();
+  for (const key of ["food","health","education","farm","finance","ai"]) {
+    if (l.includes(key)) return key === "ai" ? "default" : key;
+  }
+  return "default";
+}
+
+function renderCharts(idea, score) {
+  const cat = getCategory(idea);
+  const mData = MARKET_DATA[cat] || MARKET_DATA.default;
+  const rData = REVENUE_DATA[cat] || REVENUE_DATA.default;
+
+  // Destroy old charts
+  if (marketChartInstance) marketChartInstance.destroy();
+  if (revenueChartInstance) revenueChartInstance.destroy();
+  if (swotChartInstance) swotChartInstance.destroy();
+
+  const chartDefaults = {
+    plugins: { legend: { labels: { color: "#8b95a8", font: { family: "DM Sans" } } } },
+    scales: {
+      x: { ticks: { color: "#8b95a8" }, grid: { color: "rgba(255,255,255,0.05)" } },
+      y: { ticks: { color: "#8b95a8" }, grid: { color: "rgba(255,255,255,0.05)" } }
+    }
+  };
+
+  // Market Growth Chart
+  marketChartInstance = new Chart(document.getElementById("marketChart"), {
+    type: "bar",
+    data: {
+      labels: mData.labels,
+      datasets: [{
+        label: `Market Size (${mData.unit})`,
+        data: mData.data,
+        backgroundColor: "rgba(232,255,71,0.3)",
+        borderColor: "#e8ff47",
+        borderWidth: 2,
+        borderRadius: 6
+      }]
+    },
+    options: { ...chartDefaults, responsive: true }
+  });
+
+  // Revenue Projection Chart
+  revenueChartInstance = new Chart(document.getElementById("revenueChart"), {
+    type: "line",
+    data: {
+      labels: ["Year 1", "Year 2", "Year 3"],
+      datasets: [{
+        label: "Revenue (₹ Lakhs)",
+        data: rData,
+        borderColor: "#4ade80",
+        backgroundColor: "rgba(74,222,128,0.1)",
+        borderWidth: 2,
+        pointBackgroundColor: "#4ade80",
+        pointRadius: 6,
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: { ...chartDefaults, responsive: true }
+  });
+
+  // SWOT Radar Chart
+  const s = Math.min(10, score);
+  swotChartInstance = new Chart(document.getElementById("swotChart"), {
+    type: "radar",
+    data: {
+      labels: ["Strengths", "Opportunities", "Market Fit", "Innovation", "Scalability", "Team Readiness"],
+      datasets: [{
+        label: "Your Idea",
+        data: [s, Math.min(10, s+1), Math.max(5, s-1), Math.min(10, s+2), s, Math.max(4, s-2)],
+        borderColor: "#e8ff47",
+        backgroundColor: "rgba(232,255,71,0.1)",
+        pointBackgroundColor: "#e8ff47",
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        r: {
+          ticks: { color: "#8b95a8", backdropColor: "transparent" },
+          grid: { color: "rgba(255,255,255,0.1)" },
+          pointLabels: { color: "#8b95a8", font: { family: "DM Sans", size: 11 } },
+          min: 0, max: 10
+        }
+      },
+      plugins: { legend: { labels: { color: "#8b95a8" } } }
+    }
+  });
 }
