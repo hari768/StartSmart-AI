@@ -326,3 +326,17 @@ function renderCharts(idea, score) {
     }
   });
 }
+
+function shareWhatsApp() {
+  const idea = document.getElementById("ideaInput").value.trim() || "My Startup Idea";
+  const score = document.getElementById("scoreValue").textContent;
+  const text = `🚀 I just validated my startup idea on StartSmart AI!\n\n💡 Idea: "${idea}"\n📊 Investor Readiness Score: ${score}\n\nAnalyze your startup idea here: https://startsmart-ai-7288.vercel.app`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+}
+
+function shareLinkedIn() {
+  const idea = document.getElementById("ideaInput").value.trim() || "My Startup Idea";
+  const score = document.getElementById("scoreValue").textContent;
+  const text = `🚀 Excited to share my startup idea analysis!\n\n💡 "${idea}"\n📊 Investor Readiness Score: ${score}/10\n\nAnalyzed using StartSmart AI — an AI-powered startup validator built for FlowZint AI Hackathon 2026.\n\n🔗 Try it yourself: https://startsmart-ai-7288.vercel.app\n\n#StartupIndia #Entrepreneurship #AI #FlowZintHackathon`;
+  window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent("https://startsmart-ai-7288.vercel.app")}&summary=${encodeURIComponent(text)}`, "_blank");
+}
